@@ -15,7 +15,7 @@ class RecordPresenter : RecordContract.Presenter {
 
     override fun onStartRecording() {
         val now = Date()
-        val formattedDate = SimpleDateFormat.getDateTimeInstance().format(now)
+        val formattedDate = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.ENGLISH).format(now)
         val fileName = "${view?.getDirectory()}/${formattedDate}.3gp"
         view?.updateUi(true)
         model.startRecording(fileName)
