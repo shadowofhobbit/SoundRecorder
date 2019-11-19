@@ -4,4 +4,6 @@
     <string name="record">Запись</string>
     <string name="stop">Стоп</string>
     <string name="recording">Идет запись…</string>
+    <string name="play">Воспроизвести</string>
+    <string name="no_recordings">Нет фрагментов</string>
 </resources>

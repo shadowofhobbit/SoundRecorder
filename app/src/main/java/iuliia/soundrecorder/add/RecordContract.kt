@@ -9,6 +9,7 @@ interface RecordContract {
         fun onStopRecording()
         fun onLeaveView()
     }
+
     interface View: BaseView {
         fun updateUi(startRecording: Boolean)
         fun getDirectory(): String

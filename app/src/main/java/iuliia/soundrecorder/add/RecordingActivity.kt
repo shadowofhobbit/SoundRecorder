@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import iuliia.soundrecorder.R
+import iuliia.soundrecorder.getDirectory
 import kotlinx.android.synthetic.main.activity_recording.*
 
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
@@ -67,7 +68,7 @@ class RecordingActivity : AppCompatActivity(), RecordContract.View {
     }
 
     override fun getDirectory(): String {
-        return externalCacheDir!!.absolutePath
+        return getDirectory(this).absolutePath
     }
 
     override fun onStop() {

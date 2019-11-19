@@ -3,7 +3,7 @@
     package="iuliia.soundrecorder">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -11,9 +11,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".add.RecordingActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".recordingslist.RecordingsListActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".recordingslist.RecordingsListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
