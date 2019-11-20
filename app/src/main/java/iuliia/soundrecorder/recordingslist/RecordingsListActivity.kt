@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import iuliia.soundrecorder.R
+import iuliia.soundrecorder.settings.SettingsActivity
 import iuliia.soundrecorder.add.RecordingActivity
 import iuliia.soundrecorder.getDirectory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -92,7 +93,11 @@ class RecordingsListActivity : AppCompatActivity(), RecordingsListContract.View,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -1,13 +1,18 @@
 package iuliia.soundrecorder.add
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import iuliia.soundrecorder.R
 import iuliia.soundrecorder.getDirectory
+import iuliia.soundrecorder.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_recording.*
 
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
@@ -69,6 +74,32 @@ class RecordingActivity : AppCompatActivity(), RecordContract.View {
 
     override fun getDirectory(): String {
         return getDirectory(this).absolutePath
+    }
+
+    override fun getSamplingRatePreference(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val samplingRate: String = preferences.getString(
+            "samplingRate",
+            resources.getString(R.string.default_sampling_rate)
+        ) as String
+        return Integer.valueOf(samplingRate)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStop() {

@@ -1,9 +1,16 @@
 <resources>
     <string name="app_name">SoundRecorder</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Настройки</string>
     <string name="record">Запись</string>
     <string name="stop">Стоп</string>
     <string name="recording">Идет запись…</string>
     <string name="play">Воспроизвести</string>
     <string name="no_recordings">Нет фрагментов</string>
+    <string name="title_activity_settings">Настройки</string>
+
+    <!-- Preferences -->
+    <string name="source_title">Источник звука</string>
+    <string name="sampling_rate">Частота дискретизации</string>
+
+    <string name="default_sampling_rate">48000</string>
 </resources>

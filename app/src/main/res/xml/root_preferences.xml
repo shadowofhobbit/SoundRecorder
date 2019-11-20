@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        app:key="samplingRate"
+        app:title="@string/sampling_rate"
+        app:entries="@array/sampling_rate_entries"
+        app:entryValues="@array/sampling_rate_values"
+        app:defaultValue="@string/default_sampling_rate"
+        app:useSimpleSummaryProvider="true"/>
+
+    <ListPreference
+        app:defaultValue="mic"
+        app:entries="@array/source_entries"
+        app:entryValues="@array/source_values"
+        app:key="source"
+        app:title="@string/source_title"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

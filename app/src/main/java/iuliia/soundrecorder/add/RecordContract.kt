@@ -13,10 +13,11 @@ interface RecordContract {
     interface View: BaseView {
         fun updateUi(startRecording: Boolean)
         fun getDirectory(): String
+        fun getSamplingRatePreference(): Int
     }
 
     interface Model {
-        fun startRecording(fileName: String)
+        fun startRecording(filePath: String, samplingRate: Int)
         fun stopRecording()
         fun release()
     }
