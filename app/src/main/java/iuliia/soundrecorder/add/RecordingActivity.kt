@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import iuliia.soundrecorder.R
 import iuliia.soundrecorder.getDirectory
 import iuliia.soundrecorder.settings.SettingsActivity
@@ -26,7 +27,7 @@ class RecordingActivity : AppCompatActivity(), RecordContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recording)
-        presenter = RecordPresenter()
+        presenter = RecordPresenter(RecordModel())
         presenter.attachView(this)
         startRecordingButton.setOnClickListener {
             onRecord()
@@ -83,6 +84,11 @@ class RecordingActivity : AppCompatActivity(), RecordContract.View {
             resources.getString(R.string.default_sampling_rate)
         ) as String
         return Integer.valueOf(samplingRate)
+    }
+
+    override fun displayError() {
+        Snackbar.make(recordingLayout, getString(R.string.error_recording), Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

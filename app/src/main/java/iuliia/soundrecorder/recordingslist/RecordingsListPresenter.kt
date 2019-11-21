@@ -1,5 +1,7 @@
 package iuliia.soundrecorder.recordingslist
 
+import java.io.IOException
+
 class RecordingsListPresenter(private val model: RecordingsListContract.Model) : RecordingsListContract.Presenter {
     private var view: RecordingsListContract.View? = null
 
@@ -12,7 +14,11 @@ class RecordingsListPresenter(private val model: RecordingsListContract.Model) :
     }
 
     override fun onStartPlaying(path: String) {
-        model.startPlaying(path)
+        try {
+            model.startPlaying(path)
+        } catch (e: IOException) {
+            view?.displayError()
+        }
     }
 
     override fun detachView() {

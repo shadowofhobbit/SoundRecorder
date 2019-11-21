@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.google.android.material.snackbar.Snackbar
 import iuliia.soundrecorder.R
 import iuliia.soundrecorder.settings.SettingsActivity
 import iuliia.soundrecorder.add.RecordingActivity
@@ -83,6 +84,11 @@ class RecordingsListActivity : AppCompatActivity(), RecordingsListContract.View,
             ?.map { title -> Recording(title) }
             ?: arrayListOf()
         adapter.setData(recordings)
+    }
+
+    override fun displayError() {
+        Snackbar.make(recordingsView, getString(R.string.error_playing), Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

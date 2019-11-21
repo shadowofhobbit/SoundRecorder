@@ -2,6 +2,7 @@ package iuliia.soundrecorder.add
 
 import iuliia.soundrecorder.mvp.BasePresenter
 import iuliia.soundrecorder.mvp.BaseView
+import java.io.IOException
 
 interface RecordContract {
     interface Presenter : BasePresenter<View> {
@@ -17,6 +18,7 @@ interface RecordContract {
     }
 
     interface Model {
+        @Throws(IOException::class)
         fun startRecording(filePath: String, samplingRate: Int)
         fun stopRecording()
         fun release()

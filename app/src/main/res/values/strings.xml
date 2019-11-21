@@ -13,4 +13,6 @@
     <string name="sampling_rate">Частота дискретизации</string>
 
     <string name="default_sampling_rate">48000</string>
+    <string name="error_recording">Ошибка записи</string>
+    <string name="error_playing">Ошибка воспроизведения</string>
 </resources>

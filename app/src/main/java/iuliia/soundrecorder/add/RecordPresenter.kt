@@ -1,11 +1,12 @@
 package iuliia.soundrecorder.add
 
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class RecordPresenter : RecordContract.Presenter {
-    private val model: RecordContract.Model = RecordModel()
+class RecordPresenter(private val model: RecordContract.Model) : RecordContract.Presenter {
 
     private var view: RecordContract.View? = null
 
@@ -17,8 +18,17 @@ class RecordPresenter : RecordContract.Presenter {
         val now = Date()
         val formattedDate = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.ENGLISH).format(now)
         val filePath = "${view?.getDirectory()}/${formattedDate}.3gp"
-        view?.updateUi(true)
-        model.startRecording(filePath, view!!.getSamplingRatePreference())
+        view?.apply {
+            updateUi(true)
+            try {
+                model.startRecording(filePath, getSamplingRatePreference())
+            } catch (e: IOException) {
+                File(filePath).delete()
+                displayError()
+                updateUi(false)
+                model.release()
+            }
+        }
     }
 
     override fun onStopRecording() {
