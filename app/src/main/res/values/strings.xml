@@ -15,4 +15,6 @@
     <string name="error_recording">Ошибка записи</string>
     <string name="error_playing">Ошибка воспроизведения</string>
     <string name="saved">Фрагмент сохранен</string>
+    <string name="default_source">MIC</string>
+    <string name="error_bluetooth">Не удается подключиться к устройству Bluetooth</string>
 </resources>

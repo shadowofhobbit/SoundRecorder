@@ -1,10 +1,11 @@
 package iuliia.soundrecorder.record
 
+import android.media.AudioManager
 import android.media.MediaRecorder
 import java.io.IOException
 
 
-class RecordModel : RecordContract.Model {
+class RecordModel(private val audioManager: AudioManager) : RecordContract.Model {
     private var recorder: MediaRecorder? = null
 
     @Throws(IOException::class)
@@ -24,9 +25,14 @@ class RecordModel : RecordContract.Model {
         }
     }
 
+    override fun prepareToUseBluetooth() {
+        audioManager.startBluetoothSco()
+    }
+
     override fun release() {
         recorder?.release()
         recorder = null
+        audioManager.stopBluetoothSco()
     }
 
     override fun stopRecording() {

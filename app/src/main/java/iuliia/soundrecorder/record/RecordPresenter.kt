@@ -27,6 +27,7 @@ class RecordPresenter(private val model: RecordContract.Model) : RecordContract.
                 displayError()
                 updateUi(false)
                 model.release()
+                view?.stopReceivingBluetoothEvents()
             }
         }
     }
@@ -35,9 +36,23 @@ class RecordPresenter(private val model: RecordContract.Model) : RecordContract.
         view?.updateUi(false)
         model.stopRecording()
         view?.displayRecordingSaved()
+        view?.stopReceivingBluetoothEvents()
+    }
+
+    override fun onUseBluetooth() {
+        model.prepareToUseBluetooth()
+    }
+
+    override fun onBluetoothFailed() {
+        view?.apply {
+            displayBluetoothError()
+            stopReceivingBluetoothEvents()
+        }
+        model.release()
     }
 
     override fun onLeaveView() {
+        view?.stopReceivingBluetoothEvents()
         model.release()
     }
 

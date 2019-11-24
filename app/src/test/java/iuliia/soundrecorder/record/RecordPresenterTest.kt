@@ -34,6 +34,7 @@ class RecordPresenterTest {
         verify(view).displayError()
         verify(view).updateUi(false)
         verify(model).release()
+        verify(view).stopReceivingBluetoothEvents()
     }
 
     @Test
@@ -52,11 +53,14 @@ class RecordPresenterTest {
         presenter.onStopRecording()
         verify(view).updateUi(false)
         verify(model).stopRecording()
+        verify(view).displayRecordingSaved()
+        verify(view).stopReceivingBluetoothEvents()
     }
 
     @Test
     fun onLeaveView() {
         presenter.onLeaveView()
+        verify(view).stopReceivingBluetoothEvents()
         verify(model).release()
     }
 }

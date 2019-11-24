@@ -1,8 +1,13 @@
 package iuliia.soundrecorder.record
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.media.AudioManager
+import android.media.AudioManager.*
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -24,11 +29,34 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
 
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
 
+    private lateinit var receiver: BroadcastReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recording)
-        presenter = RecordPresenter(RecordModel())
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        presenter = RecordPresenter(RecordModel(audioManager))
         presenter.attachView(this)
+        receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent) {
+                val state = intent.getIntExtra(EXTRA_SCO_AUDIO_STATE, SCO_AUDIO_STATE_ERROR)
+                val previousState =
+                    intent.getIntExtra(EXTRA_SCO_AUDIO_PREVIOUS_STATE, SCO_AUDIO_STATE_ERROR)
+                when (state) {
+                    SCO_AUDIO_STATE_CONNECTED -> {
+                        presenter.onStartRecording()
+                    }
+                    SCO_AUDIO_STATE_ERROR -> {
+                        displayError()
+                    }
+                    SCO_AUDIO_STATE_DISCONNECTED -> {
+                        if (previousState == SCO_AUDIO_STATE_CONNECTING) {
+                            presenter.onBluetoothFailed()
+                        }
+                    }
+                }
+            }
+        }
         startRecordingButton.setOnClickListener {
             onRecord()
         }
@@ -48,7 +76,20 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
                 REQUEST_RECORD_AUDIO_PERMISSION
             )
         } else {
-            presenter.onStartRecording()
+            val sourcePreference = getSourcePreference()
+            if (sourcePreference == Source.BLUETOOTH) {
+                presenter.onUseBluetooth()
+                val intent =
+                    registerReceiver(receiver, IntentFilter(ACTION_SCO_AUDIO_STATE_UPDATED))
+                val state = intent?.getIntExtra(EXTRA_SCO_AUDIO_STATE, SCO_AUDIO_STATE_ERROR)
+                if (state == SCO_AUDIO_STATE_CONNECTED) {
+                    presenter.onStartRecording()
+                } else if (state == SCO_AUDIO_STATE_ERROR) {
+                    displayError()
+                }
+            } else {
+                presenter.onStartRecording()
+            }
         }
 
     }
@@ -86,13 +127,25 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
         return Integer.valueOf(samplingRate)
     }
 
+    override fun getSourcePreference(): Source {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val source: String = preferences.getString(
+            "source",
+            resources.getString(R.string.default_source)
+        ) as String
+        return Source.valueOf(source)
+    }
+
     override fun displayRecordingSaved() {
         Snackbar.make(recordingLayout, R.string.saved, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun displayError() {
-        Snackbar.make(recordingLayout, getString(R.string.error_recording), Snackbar.LENGTH_SHORT)
-            .show()
+        Snackbar.make(recordingLayout, R.string.error_recording, Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun displayBluetoothError() {
+        Snackbar.make(recordingLayout, R.string.error_bluetooth, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -115,6 +168,14 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
     override fun onStop() {
         super.onStop()
         presenter.onLeaveView()
+    }
+
+    override fun stopReceivingBluetoothEvents() {
+        try {
+            unregisterReceiver(receiver)
+        } catch (exception: IllegalArgumentException) {
+            exception.printStackTrace()
+        }
     }
 
     override fun onDestroy() {

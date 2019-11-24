@@ -9,6 +9,8 @@ interface RecordContract {
         fun onStartRecording()
         fun onStopRecording()
         fun onLeaveView()
+        fun onBluetoothFailed()
+        fun onUseBluetooth()
     }
 
     interface View: BaseView {
@@ -16,6 +18,9 @@ interface RecordContract {
         fun getDirectory(): String
         fun getSamplingRatePreference(): Int
         fun displayRecordingSaved()
+        fun getSourcePreference(): Source
+        fun displayBluetoothError()
+        fun stopReceivingBluetoothEvents()
     }
 
     interface Model {
@@ -23,5 +28,6 @@ interface RecordContract {
         fun startRecording(filePath: String, samplingRate: Int)
         fun stopRecording()
         fun release()
+        fun prepareToUseBluetooth()
     }
 }
