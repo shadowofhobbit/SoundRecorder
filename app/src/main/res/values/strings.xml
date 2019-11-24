@@ -5,14 +5,14 @@
     <string name="stop">Стоп</string>
     <string name="recording">Идет запись…</string>
     <string name="play">Воспроизвести</string>
-    <string name="no_recordings">Нет фрагментов</string>
+    <string name="no_recordings">Записанных фрагментов пока нет</string>
     <string name="title_activity_settings">Настройки</string>
 
-    <!-- Preferences -->
     <string name="source_title">Источник звука</string>
     <string name="sampling_rate">Частота дискретизации</string>
-
     <string name="default_sampling_rate">48000</string>
+
     <string name="error_recording">Ошибка записи</string>
     <string name="error_playing">Ошибка воспроизведения</string>
+    <string name="saved">Фрагмент сохранен</string>
 </resources>

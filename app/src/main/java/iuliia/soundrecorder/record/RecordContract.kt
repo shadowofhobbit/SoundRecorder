@@ -1,4 +1,4 @@
-package iuliia.soundrecorder.add
+package iuliia.soundrecorder.record
 
 import iuliia.soundrecorder.mvp.BasePresenter
 import iuliia.soundrecorder.mvp.BaseView
@@ -15,6 +15,7 @@ interface RecordContract {
         fun updateUi(startRecording: Boolean)
         fun getDirectory(): String
         fun getSamplingRatePreference(): Int
+        fun displayRecordingSaved()
     }
 
     interface Model {

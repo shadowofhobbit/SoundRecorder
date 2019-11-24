@@ -1,4 +1,4 @@
-package iuliia.soundrecorder.add
+package iuliia.soundrecorder.record
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -14,9 +14,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class RecordingActivityTest {
+class RecordActivityTest {
     @get:Rule
-    val rule = ActivityTestRule(RecordingActivity::class.java)
+    val rule = ActivityTestRule(RecordActivity::class.java)
 
     @Test
     fun buttonsVisible() {

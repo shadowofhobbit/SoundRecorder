@@ -1,4 +1,4 @@
-package iuliia.soundrecorder.add
+package iuliia.soundrecorder.record
 
 import android.media.MediaRecorder
 import java.io.IOException

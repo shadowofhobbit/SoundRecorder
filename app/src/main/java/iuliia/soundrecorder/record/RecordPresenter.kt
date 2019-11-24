@@ -1,4 +1,4 @@
-package iuliia.soundrecorder.add
+package iuliia.soundrecorder.record
 
 import java.io.File
 import java.io.IOException
@@ -34,6 +34,7 @@ class RecordPresenter(private val model: RecordContract.Model) : RecordContract.
     override fun onStopRecording() {
         view?.updateUi(false)
         model.stopRecording()
+        view?.displayRecordingSaved()
     }
 
     override fun onLeaveView() {

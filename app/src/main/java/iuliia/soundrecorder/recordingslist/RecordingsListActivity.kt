@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.snackbar.Snackbar
 import iuliia.soundrecorder.R
 import iuliia.soundrecorder.settings.SettingsActivity
-import iuliia.soundrecorder.add.RecordingActivity
+import iuliia.soundrecorder.record.RecordActivity
 import iuliia.soundrecorder.getDirectory
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -47,7 +47,7 @@ class RecordingsListActivity : AppCompatActivity(), RecordingsListContract.View,
         presenter.attachView(this)
 
         fab.setOnClickListener {
-            val intent = Intent(this, RecordingActivity::class.java)
+            val intent = Intent(this, RecordActivity::class.java)
             startActivity(intent)
         }
     }

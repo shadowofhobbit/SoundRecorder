@@ -1,4 +1,4 @@
-package iuliia.soundrecorder.add
+package iuliia.soundrecorder.record
 
 import org.junit.Before
 import org.junit.Test

@@ -1,4 +1,4 @@
-package iuliia.soundrecorder.add
+package iuliia.soundrecorder.record
 
 import android.Manifest
 import android.content.Intent
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_recording.*
 
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class RecordingActivity : AppCompatActivity(), RecordContract.View {
+class RecordActivity : AppCompatActivity(), RecordContract.View {
 
     private lateinit var presenter: RecordContract.Presenter
 
@@ -84,6 +84,10 @@ class RecordingActivity : AppCompatActivity(), RecordContract.View {
             resources.getString(R.string.default_sampling_rate)
         ) as String
         return Integer.valueOf(samplingRate)
+    }
+
+    override fun displayRecordingSaved() {
+        Snackbar.make(recordingLayout, R.string.saved, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun displayError() {
