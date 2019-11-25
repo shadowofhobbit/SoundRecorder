@@ -17,7 +17,7 @@ class RecordPresenter(private val model: RecordContract.Model) : RecordContract.
     override fun onStartRecording() {
         val now = Date()
         val formattedDate = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.ENGLISH).format(now)
-        val filePath = "${view?.getDirectory()}/${formattedDate}.3gp"
+        val filePath = "${view?.directory}/${formattedDate}.3gp"
         view?.apply {
             updateUi(true)
             try {
@@ -30,6 +30,10 @@ class RecordPresenter(private val model: RecordContract.Model) : RecordContract.
                 view?.stopReceivingBluetoothEvents()
             }
         }
+    }
+
+    override fun onViewReady() {
+        view?.startSoundVisualizerUpdates { model.maxAmplitude }
     }
 
     override fun onStopRecording() {
@@ -53,10 +57,12 @@ class RecordPresenter(private val model: RecordContract.Model) : RecordContract.
 
     override fun onLeaveView() {
         view?.stopReceivingBluetoothEvents()
+        view?.stopSoundVisualizerUpdates()
         model.release()
     }
 
     override fun detachView() {
         this.view = null
     }
+
 }

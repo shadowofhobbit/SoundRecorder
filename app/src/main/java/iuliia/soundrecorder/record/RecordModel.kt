@@ -40,7 +40,10 @@ class RecordModel(private val audioManager: AudioManager) : RecordContract.Model
         release()
     }
 
+    override val maxAmplitude: Int
+        get() = recorder?.maxAmplitude ?: 0
+
     companion object {
-        private const val BIT_DEPTH = 8
+        private const val BIT_DEPTH = 16
     }
 }

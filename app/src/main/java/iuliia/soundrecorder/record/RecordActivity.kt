@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.AudioManager.*
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,9 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
 
     private lateinit var receiver: BroadcastReceiver
+
+    private val handler: Handler = Handler()
+    private lateinit var updater: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,11 +115,31 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
     override fun updateUi(startRecording: Boolean) {
         startRecordingButton.isEnabled = !startRecording
         stopRecordingButton.isEnabled = startRecording
-        statusView.text = if (startRecording) getString(R.string.recording) else ""
+        if (startRecording) {
+            visualizerView.clear()
+        }
     }
 
-    override fun getDirectory(): String {
-        return getDirectory(this).absolutePath
+    override fun startSoundVisualizerUpdates(getMaxAmplitude: () -> Int) {
+        updater = object : Runnable {
+            override fun run() {
+                handler.postDelayed(this, 1)
+                val maxAmplitude: Int = getMaxAmplitude()
+                if (maxAmplitude != 0) {
+                    visualizerView.addAmplitude(maxAmplitude)
+                }
+            }
+        }
+        handler.post(updater)
+    }
+
+    override val directory: String
+        get() {
+            return getDirectory(this).absolutePath
+        }
+
+    override fun stopSoundVisualizerUpdates() {
+        handler.removeCallbacks(updater)
     }
 
     override fun getSamplingRatePreference(): Int {
@@ -163,6 +187,11 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onViewReady()
     }
 
     override fun onStop() {

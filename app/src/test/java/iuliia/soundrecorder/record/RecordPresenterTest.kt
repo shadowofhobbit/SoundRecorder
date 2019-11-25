@@ -27,7 +27,7 @@ class RecordPresenterTest {
     fun onStartRecordingError() {
         `when`(model.startRecording(anyString(), anyInt())).thenThrow(IOException::class.java)
         presenter.onStartRecording()
-        verify(view).getDirectory()
+        verify(view).directory
         verify(view, times(1)).updateUi(true)
         verify(view).getSamplingRatePreference()
         verify(model).startRecording(anyString(), anyInt())
@@ -40,7 +40,7 @@ class RecordPresenterTest {
     @Test
     fun onStartRecordingNoErrors() {
         presenter.onStartRecording()
-        verify(view).getDirectory()
+        verify(view).directory
         verify(view).updateUi(true)
         verify(view).getSamplingRatePreference()
         verify(model).startRecording(anyString(), anyInt())
@@ -61,6 +61,7 @@ class RecordPresenterTest {
     fun onLeaveView() {
         presenter.onLeaveView()
         verify(view).stopReceivingBluetoothEvents()
+        verify(view).stopSoundVisualizerUpdates()
         verify(model).release()
     }
 }

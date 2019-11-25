@@ -11,16 +11,19 @@ interface RecordContract {
         fun onLeaveView()
         fun onBluetoothFailed()
         fun onUseBluetooth()
+        fun onViewReady()
     }
 
     interface View: BaseView {
         fun updateUi(startRecording: Boolean)
-        fun getDirectory(): String
+        val directory: String
         fun getSamplingRatePreference(): Int
         fun displayRecordingSaved()
         fun getSourcePreference(): Source
         fun displayBluetoothError()
         fun stopReceivingBluetoothEvents()
+        fun startSoundVisualizerUpdates(getMaxAmplitude: () -> Int)
+        fun stopSoundVisualizerUpdates()
     }
 
     interface Model {
@@ -29,5 +32,6 @@ interface RecordContract {
         fun stopRecording()
         fun release()
         fun prepareToUseBluetooth()
+        val maxAmplitude: Int
     }
 }
