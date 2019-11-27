@@ -9,23 +9,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.snackbar.Snackbar
+import iuliia.soundrecorder.App
 import iuliia.soundrecorder.R
 import iuliia.soundrecorder.settings.SettingsActivity
 import iuliia.soundrecorder.record.RecordActivity
 import iuliia.soundrecorder.getDirectory
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class RecordingsListActivity : AppCompatActivity(), RecordingsListContract.View, OnListInteractionListener {
-    private lateinit var presenter: RecordingsListContract.Presenter
+    @Inject
+    lateinit var presenter: RecordingsListContract.Presenter
     private lateinit var adapter: RecordingAdapter
     private lateinit var adapterDataObserver: AdapterDataObserver
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         recordingsView.layoutManager = LinearLayoutManager(this)
-        presenter = RecordingsListPresenter(RecordingsListModel())
         adapter = RecordingAdapter(arrayListOf(), this)
         recordingsView.adapter = adapter
         adapterDataObserver = object : AdapterDataObserver() {

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.media.AudioManager
 import android.media.AudioManager.*
 import android.os.Bundle
 import android.os.Handler
@@ -17,29 +16,32 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
+import iuliia.soundrecorder.App
 import iuliia.soundrecorder.R
 import iuliia.soundrecorder.getDirectory
 import iuliia.soundrecorder.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_recording.*
+import javax.inject.Inject
 
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
 class RecordActivity : AppCompatActivity(), RecordContract.View {
 
-    private lateinit var presenter: RecordContract.Presenter
+    @Inject
+    lateinit var presenter: RecordContract.Presenter
 
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
 
     private lateinit var receiver: BroadcastReceiver
+    private var registeredReceiver = false
 
     private val handler: Handler = Handler()
     private lateinit var updater: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recording)
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        presenter = RecordPresenter(RecordModel(audioManager))
         presenter.attachView(this)
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
@@ -85,6 +87,7 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
                 presenter.onUseBluetooth()
                 val intent =
                     registerReceiver(receiver, IntentFilter(ACTION_SCO_AUDIO_STATE_UPDATED))
+                registeredReceiver = true
                 val state = intent?.getIntExtra(EXTRA_SCO_AUDIO_STATE, SCO_AUDIO_STATE_ERROR)
                 if (state == SCO_AUDIO_STATE_CONNECTED) {
                     presenter.onStartRecording()
@@ -200,10 +203,13 @@ class RecordActivity : AppCompatActivity(), RecordContract.View {
     }
 
     override fun stopReceivingBluetoothEvents() {
-        try {
-            unregisterReceiver(receiver)
-        } catch (exception: IllegalArgumentException) {
-            exception.printStackTrace()
+        if (registeredReceiver) {
+            try {
+                unregisterReceiver(receiver)
+                registeredReceiver = false
+            } catch (exception: IllegalArgumentException) {
+                exception.printStackTrace()
+            }
         }
     }
 

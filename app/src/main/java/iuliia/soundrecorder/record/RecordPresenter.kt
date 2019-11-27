@@ -4,9 +4,10 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 
-class RecordPresenter(private val model: RecordContract.Model) : RecordContract.Presenter {
+class RecordPresenter @Inject constructor(private val model: RecordContract.Model) : RecordContract.Presenter {
 
     private var view: RecordContract.View? = null
 

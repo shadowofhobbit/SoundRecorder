@@ -1,8 +1,9 @@
 package iuliia.soundrecorder.recordingslist
 
 import java.io.IOException
+import javax.inject.Inject
 
-class RecordingsListPresenter(private val model: RecordingsListContract.Model) : RecordingsListContract.Presenter {
+class RecordingsListPresenter @Inject constructor(private val model: RecordingsListContract.Model) : RecordingsListContract.Presenter {
     private var view: RecordingsListContract.View? = null
 
     override fun attachView(view: RecordingsListContract.View) {

@@ -2,9 +2,10 @@ package iuliia.soundrecorder.recordingslist
 
 import android.media.MediaPlayer
 import java.io.IOException
+import javax.inject.Inject
 
 
-class RecordingsListModel : RecordingsListContract.Model {
+class RecordingsListModel @Inject constructor(): RecordingsListContract.Model {
     private var player: MediaPlayer? = null
 
     @Throws(IOException::class)

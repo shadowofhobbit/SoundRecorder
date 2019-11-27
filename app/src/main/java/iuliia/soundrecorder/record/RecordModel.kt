@@ -3,9 +3,10 @@ package iuliia.soundrecorder.record
 import android.media.AudioManager
 import android.media.MediaRecorder
 import java.io.IOException
+import javax.inject.Inject
 
 
-class RecordModel(private val audioManager: AudioManager) : RecordContract.Model {
+class RecordModel @Inject constructor(private val audioManager: AudioManager) : RecordContract.Model {
     private var recorder: MediaRecorder? = null
 
     @Throws(IOException::class)
